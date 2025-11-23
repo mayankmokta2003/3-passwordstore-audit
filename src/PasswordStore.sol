@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.18;
 
+// <!--   pandoc report.md -o report.pdf --from markdown --template eisvogel --syntax-highlighting=zenburn    -->
+
 /*
  * @author not-so-secure-dev
  * @title PasswordStore
