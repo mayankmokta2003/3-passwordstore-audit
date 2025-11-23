@@ -32,6 +32,8 @@ The next shows how your `PasswordStore::s_password` can be accesed by anyone.
 
 
 
+
+
 ### [S-#] TITLE (Root Cause + Impact) Anyone can change the password
 
 **Description:** In the function `PasswordStore::setPassword` the function in actually not set to only owner can call which is actually not the thing contract should show because you want that only the owner can change the password.
@@ -56,4 +58,41 @@ function testAnyoneCanChangePassword(address randomuser) external {
 
 </details>
 
-**Recommended Mitigation:**
+**Recommended Mitigation:** Add an access control to the function `PasswordStore::setPassword` so only owner can call this function.
+
+```javascript
+
+if(msg.sender != s_owner){
+    revert PasswordStore__NotOwner();
+}
+
+```
+
+
+
+
+
+
+
+### [S-#] TITLE (Root Cause + Impact) the description of the function `PasswordStore::getPassword` is wrong.
+
+**Description:** the line below says there should be a parameter ion the `PasswordStore::getPassword` but there is no parameter at all.
+
+```javascript
+
+/*
+     * @notice This allows only the owner to retrieve the password.
+@>     * @param newPassword The new password to set.
+     */
+    function getPassword() external view returns (string memory);
+```
+ 
+**Impact:** the line `@param newPassword The new password to set.` is incorrect.
+
+**Recommended Mitigation:** Remove the incorrect natspec.
+
+```diff
+
+- * @param newPassword The new password to set.
+
+```
