@@ -26,3 +26,34 @@ The next shows how your `PasswordStore::s_password` can be accesed by anyone.
 
 
 **Recommended Mitigation:** 
+
+
+
+
+
+
+### [S-#] TITLE (Root Cause + Impact) Anyone can change the password
+
+**Description:** In the function `PasswordStore::setPassword` the function in actually not set to only owner can call which is actually not the thing contract should show because you want that only the owner can change the password.
+
+**Impact:** Due to not making the function `PasswordStore::setPassword` only called by the user anyone from outside can call this function and anyone can set the password or create new password which is a big issue.
+
+**Proof of Concept:** The next test shows that anyone from outside can set the password. Plus add this test in `PasswordStoreTest.t.sol`.
+
+<details>
+
+```javascript
+function testAnyoneCanChangePassword(address randomuser) external {
+        vm.assume(randomuser != owner);
+        vm.prank(randomuser);
+        string memory expectedPass = "mayank123";
+        passwordStore.setPassword(expectedPass);
+        vm.prank(owner);
+        string memory pass = passwordStore.getPassword();
+        assetEq(pass,expectedPass);
+    }
+```
+
+</details>
+
+**Recommended Mitigation:**
